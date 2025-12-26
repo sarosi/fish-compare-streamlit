@@ -59,7 +59,6 @@ def run():
         ax.set_yticks(range(len(SPECIES_DATA)))
         ax.set_yticklabels(SPECIES_DATA.keys())
         ax.set_title(param)
-        ax.set_xlabel(param)
         ax.grid(True)
 
     st.pyplot(fig)
