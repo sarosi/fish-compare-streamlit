@@ -5,6 +5,13 @@ SPECIES_DATA = {
         "Temperature (°C)": (16, 26),
         "pH": (6.5, 8.0),
         "Hardness (dGH)": (4, 12),
+        "Min Tank Size (L)": 20,
+    },
+    "Amano shrimp": {
+        "Temperature (°C)": (20, 25),
+        "pH": (6.0, 7.5),
+        "Hardness (dGH)": (1, 12),
+        "Min Tank Size (L)": 40,
     },
     "Honey Gourami": {
         "Temperature (°C)": (20, 30),
@@ -16,6 +23,7 @@ SPECIES_DATA = {
         "Temperature (°C)": (18, 24),
         "pH": (6.0, 7.5),
         "Hardness (dGH)": (4, 25),
+        "Min Tank Size (L)": 80,
     },
     "Otocinclus": {
         "Temperature (°C)": (20, 28),
@@ -27,6 +35,8 @@ SPECIES_DATA = {
         "Temperature (°C)": (20, 28),
         "pH": (5.0, 7.0),
         "Hardness (dGH)": (2, 10),
+        "Min Tank Size (L)": 40,
+        "Min Tank Size (L)": 80,
     },
     "Rotkopfsalmler": {
         "Temperature (°C)": (23, 30),
@@ -41,7 +51,7 @@ SPECIES_DATA = {
         "pH": (5.0, 7.0),
         "Hardness (dGH)": (2, 12),
         "Min Tank Size (L)": 40,
-        "Min groupsize": 12
+        "Min groupsize": 12,
     },
     "Pencil tetra": {
         "Temperature (°C)": (22, 27),
@@ -50,25 +60,25 @@ SPECIES_DATA = {
         "Min Tank Size (L)": 60,
         "Min Tank lenght (cm)": 60,
     },
-    "Amano shrimp": {
-        "Temperature (°C)": (20, 25),
-        "pH": (6.0, 7.5),
-        "Hardness (dGH)": (1, 12),
-    },
     "Schwarzer neon": {
         "Temperature (°C)": (21, 28),
         "pH": (6.0, 7.0),
         "Hardness (dGH)": (1, 10),
+        "Min Tank Size (L)": 80,
+        "Min Tank lenght (cm)": 80,
+        "Min groupsize": 10,
     },
     "Boraras utoptalmodes": {
         "Temperature (°C)": (22, 26),
         "pH": (5.0, 7.0),
         "Hardness (dGH)": (3, 10),
+        "Min Tank Size (L)": 60,
     },
     "Posthornschnecke": {
         "Temperature (°C)": (18, 28),
         "pH": (6.5, 8.0),
         "Hardness (dGH)": (5, 20),
+        "Min Tank Size (L)": 10,
     },
      "Apistogramma Tefe": {
         "Temperature (°C)": (22, 28),

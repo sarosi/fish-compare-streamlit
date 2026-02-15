@@ -1,64 +1,76 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 from data import SPECIES_DATA
 
 
 def run():
-    st.header("Find Species by Tank Conditions")
+    st.header("Find Compatible Species for Your Tank")
 
-    parameters = list(next(iter(SPECIES_DATA.values())).keys())
+    st.subheader("Set Your Tank Conditions")
 
-    st.sidebar.header("Tank Conditions")
-    tank_conditions = {}
+    # -----------------------------
+    # Sliders for water parameters
+    # -----------------------------
 
-    for param in parameters:
-        all_ranges = [SPECIES_DATA[s][param] for s in SPECIES_DATA]
-        global_min = min(r[0] for r in all_ranges)
-        global_max = max(r[1] for r in all_ranges)
+    temperature = st.slider(
+        "Temperature (°C)",
+        min_value=10,
+        max_value=35,
+        value=24
+    )
 
-        tank_conditions[param] = st.sidebar.slider(
-            param,
-            float(global_min),
-            float(global_max),
-            float((global_min + global_max) / 2),
-            step=0.1
-        )
+    ph = st.slider(
+        "pH",
+        min_value=4.0,
+        max_value=9.0,
+        value=7.0,
+        step=0.1
+    )
 
-    def species_fits(species_params):
-        for param, value in tank_conditions.items():
-            low, high = species_params[param]
-            if not (low <= value <= high):
-                return False
-        return True
+    hardness = st.slider(
+        "Hardness (°dGH)",
+        min_value=0,
+        max_value=30,
+        value=10
+    )
+
+    tank_size = st.slider(
+        "Tank Size (Liters)",
+        min_value=10,
+        max_value=500,
+        value=60,
+        step=5
+    )
+
+    # -----------------------------
+    # Filtering logic
+    # -----------------------------
+
+    compatible_species = []
+
+    for species, params in SPECIES_DATA.items():
+
+        temp_min, temp_max = params["Temperature (°C)"]
+        ph_min, ph_max = params["pH"]
+        hard_min, hard_max = params["Hardness (dGH)"]
+        min_tank_size = params["Min Tank Size (L)"]
+
+        if (
+            temp_min <= temperature <= temp_max and
+            ph_min <= ph <= ph_max and
+            hard_min <= hardness <= hard_max and
+            tank_size >= min_tank_size
+        ):
+            compatible_species.append(species)
+
+    # -----------------------------
+    # Output
+    # -----------------------------
 
     st.subheader("Compatible Species")
 
-    compatible = [
-        s for s in SPECIES_DATA
-        if species_fits(SPECIES_DATA[s])
-    ]
-
-    if compatible:
-        for s in compatible:
-            st.success(s)
+    if compatible_species:
+        for species in compatible_species:
+            min_size = SPECIES_DATA[species]["Min Tank Size (L)"]
+            st.success(f"{species} (Min Tank: {min_size} L)")
     else:
-        st.error("No species fit the selected tank conditions.")
-
-    st.subheader("Tolerance Ranges vs Tank Conditions")
-
-    fig, axes = plt.subplots(len(parameters), 1, figsize=(10, 4 * len(parameters)))
-    if len(parameters) == 1:
-        axes = [axes]
-
-    for ax, param in zip(axes, parameters):
-        for i, s in enumerate(SPECIES_DATA):
-            r = SPECIES_DATA[s][param]
-            ax.barh(i, r[1] - r[0], left=r[0], alpha=0.4)
-
-        ax.axvline(tank_conditions[param], linestyle="--")
-        ax.set_yticks(range(len(SPECIES_DATA)))
-        ax.set_yticklabels(SPECIES_DATA.keys())
-        ax.set_title(param)
-        ax.grid(True)
-
-    st.pyplot(fig)
+        st.error("No species match the selected conditions.")

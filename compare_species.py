@@ -2,49 +2,40 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from data import SPECIES_DATA
 
-st.set_page_config(page_title="Aquatic Species Compatibility", layout="wide")
-
-# ----------------------------------
-# Species data (editable / extensible)
-# ----------------------------------
-
-
-
-# ----------------------------------
-# Helper functions
-# ----------------------------------
 
 def intersection(ranges):
     low = max(r[0] for r in ranges)
     high = min(r[1] for r in ranges)
     return (low, high) if low <= high else None
 
-# ----------------------------------
-# UI
-# ----------------------------------
 
 def run():
-    st.header("Freshwater Species Parameter Compatibility")
+    st.header("Compare Species Parameters")
 
-    st.sidebar.header("Select Species")
+    st.subheader("Select Species")
+
     selected_species = [
         s for s in SPECIES_DATA
-        if st.sidebar.checkbox(s, value=True)
+        if st.checkbox(s, value=True)
     ]
 
     if len(selected_species) < 2:
         st.warning("Please select at least two species.")
-        st.stop()
+        return
 
-    parameters = SPECIES_DATA[selected_species[0]].keys()
+    # Separate water parameters from tank size
+    water_parameters = [
+        p for p in SPECIES_DATA[selected_species[0]].keys()
+        if p != "Min Tank Size (L)"
+    ]
 
-    # ----------------------------------
-    # Text summary
-    # ----------------------------------
+    # -----------------------------
+    # Overlap computation
+    # -----------------------------
 
     st.subheader("Common Parameter Ranges")
 
-    for param in parameters:
+    for param in water_parameters:
         ranges = [SPECIES_DATA[s][param] for s in selected_species]
         result = intersection(ranges)
 
@@ -53,17 +44,30 @@ def run():
         else:
             st.error(f"{param}: No common range")
 
-    # ----------------------------------
+    # -----------------------------
+    # Minimal tank size
+    # -----------------------------
+
+    min_tank_size = max(
+        SPECIES_DATA[s]["Min Tank Size (L)"]
+        for s in selected_species
+    )
+
+    st.subheader("Minimal Tank Size Required")
+
+    st.info(f"At least **{min_tank_size} liters**")
+
+    # -----------------------------
     # Visualization
-    # ----------------------------------
+    # -----------------------------
 
     st.subheader("Visual Comparison")
 
-    fig, axes = plt.subplots(len(parameters), 1, figsize=(10, 4 * len(parameters)))
-    if len(parameters) == 1:
+    fig, axes = plt.subplots(len(water_parameters), 1, figsize=(10, 4 * len(water_parameters)))
+    if len(water_parameters) == 1:
         axes = [axes]
 
-    for ax, param in zip(axes, parameters):
+    for ax, param in zip(axes, water_parameters):
         y_labels = []
         y_pos = []
 
@@ -73,7 +77,6 @@ def run():
             y_labels.append(s)
             y_pos.append(i)
 
-        # Common overlap
         result = intersection([SPECIES_DATA[s][param] for s in selected_species])
         if result:
             ax.barh(len(selected_species), result[1] - result[0],
