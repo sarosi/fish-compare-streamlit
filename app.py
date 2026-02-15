@@ -2,7 +2,10 @@ import streamlit as st
 import compare_species
 import tank_conditions
 
-st.set_page_config(page_title="Aquarium Planner", layout="wide")
+st.set_page_config(
+    page_title="Aquarium Planner",
+    page_icon= "Assets/favicon64x64.png",
+    layout="wide")
 
 st.title("Freshwater Aquarium Planning Tool")
 
