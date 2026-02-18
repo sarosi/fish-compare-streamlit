@@ -14,13 +14,14 @@ def run():
 
     st.subheader("Select Species")
 
-    selected_species = [
-        s for s in SPECIES_DATA
-        if st.checkbox(s, value=True)
-    ]
+    selected_species = st.multiselect(
+        "Select species to compare",
+        options=sorted(SPECIES_DATA.keys()),
+        default=[]
+    )
 
-    if len(selected_species) < 2:
-        st.warning("Please select at least two species.")
+    if len(selected_species) < 1:
+        st.warning("Please select at least one species.")
         return
 
     # Separate water parameters from tank size
