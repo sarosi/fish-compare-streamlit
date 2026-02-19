@@ -1,8 +1,11 @@
 # data.py
 
+PLACEHOLDER_IMAGE = "Images/_placeholder.jpg"
+
 SPECIES_DATA = {
     "Neocaridina shrimp": {
         "Category": "Shrimp",
+        "Image": "Images/neocaridina_davidi_yellow_neon.jpg",
         "Temperature (°C)": (16, 26),
         "pH": (6.5, 8.0),
         "Hardness (dGH)": (4, 12),
@@ -17,6 +20,7 @@ SPECIES_DATA = {
     },
     "Honey Gourami": {
         "Category": "Fish",
+        "Image": "Images/honey_gourami.jpg",
         "Temperature (°C)": (20, 30),
         "pH": (6.0, 7.5),
         "Hardness (dGH)": (5, 15),
@@ -39,6 +43,7 @@ SPECIES_DATA = {
         "Min Tank Size (L)": 80,
     },
     "Otocinclus": {
+        "Image": "Images/otocinclus_sp.jpg",
         "Category": "Fish",
         "Temperature (°C)": (20, 28),
         "pH": (5.5, 7.5),
@@ -73,8 +78,9 @@ SPECIES_DATA = {
         "Min Tank lenght (cm)": 120,
         "Min groupsize": 10
     },
-    "Neon Tetra": {
+    "Blue Neon Tetra": {
         "Category": "Fish",
+        "Image": "Images/blue_neon_tetra.jpg",
         "Temperature (°C)": (21, 26),
         "pH": (5.0, 7.0),
         "Hardness (dGH)": (2, 12),

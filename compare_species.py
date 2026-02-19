@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-from data import SPECIES_DATA
+from data import SPECIES_DATA, PLACEHOLDER_IMAGE
+
 
 
 def intersection(ranges):
@@ -66,7 +67,7 @@ def run():
     # Separate water parameters from tank size
     water_parameters = [
         p for p in SPECIES_DATA[selected_species[0]].keys()
-        if p not in ["Min Tank Size (L)", "Category"]
+        if p not in ["Min Tank Size (L)", "Category", "Image"]
     ]
 
     # -----------------------------
@@ -74,6 +75,18 @@ def run():
     # -----------------------------
 
     st.subheader("Common Parameter Ranges")
+
+    cols = st.columns(len(selected_species))
+
+    for col, species in zip(cols, selected_species):
+        with col:
+            image_path = SPECIES_DATA[species].get("Image")
+            if not image_path:
+                image_path = PLACEHOLDER_IMAGE
+                st.caption("Image coming soon")
+
+            st.image(image_path, width=220)
+            st.markdown(f"**{species}**")
 
     for param in water_parameters:
         ranges = [SPECIES_DATA[s][param] for s in selected_species]
