@@ -14,11 +14,50 @@ def run():
 
     st.subheader("Select Species")
 
-    selected_species = st.multiselect(
+    # -----------------------------
+    # Build grouped options
+    # -----------------------------
+
+    CATEGORY_ICONS = {
+        "Fish": "🐟",
+        "Shrimp": "🦐",
+        "Other": "🐌"
+    }
+
+    grouped_options = {}
+
+    for species, data in SPECIES_DATA.items():
+        category = data["Category"]
+        grouped_options.setdefault(category, []).append(species)
+
+    # Sort categories and species
+    for category in grouped_options:
+        grouped_options[category].sort()
+
+    # Flatten into labeled list
+    display_options = []
+    species_lookup = {}
+
+    for category in sorted(grouped_options.keys()):
+        icon = CATEGORY_ICONS.get(category, "")
+        for species in grouped_options[category]:
+            label = f"{icon} {species}"
+            display_options.append(label)
+            species_lookup[label] = species
+
+
+    # -----------------------------
+    # Multiselect
+    # -----------------------------
+
+    selected_labels = st.multiselect(
         "Select species to compare",
-        options=sorted(SPECIES_DATA.keys()),
-        default=[]
+        options=display_options,
+        placeholder="Choose species..."
     )
+
+    selected_species = [species_lookup[label] for label in selected_labels]
+
 
     if len(selected_species) < 1:
         st.warning("Please select at least one species.")
@@ -27,7 +66,7 @@ def run():
     # Separate water parameters from tank size
     water_parameters = [
         p for p in SPECIES_DATA[selected_species[0]].keys()
-        if p != "Min Tank Size (L)"
+        if p not in ["Min Tank Size (L)", "Category"]
     ]
 
     # -----------------------------
