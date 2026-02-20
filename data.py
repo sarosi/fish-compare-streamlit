@@ -82,11 +82,11 @@ SPECIES_DATA = {
     "Blue Neon Tetra": {
         "Category": "Fish",
         "Image": "Images/blue_neon_tetra.jpg",
-        "Temperature (°C)": (21, 26),
-        "pH": (5.0, 7.0),
+        "Temperature (°C)": (21, 28),
+        "pH": (5.0, 7.5),
         "Hardness (dGH)": (2, 12),
-        "Min Tank Size (L)": 40,
-        "Min groupsize": 12,
+        "Min Tank Size (L)": 60,
+        "Min groupsize": 15,
     },
     "Pencil tetra": {
         "Category": "Fish",
