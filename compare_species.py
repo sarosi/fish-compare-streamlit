@@ -1,6 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 from data import SPECIES_DATA, PLACEHOLDER_IMAGE
+from ui import load_css, species_card
+
 
 
 
@@ -11,6 +13,8 @@ def intersection(ranges):
 
 
 def run():
+    load_css()
+
     st.header("Compare Species Parameters")
 
     st.subheader("Select Species")
@@ -66,8 +70,9 @@ def run():
 
     # Separate water parameters from tank size
     water_parameters = [
-        p for p in SPECIES_DATA[selected_species[0]].keys()
-        if p not in ["Min Tank Size (L)", "Category", "Image"]
+        "Temperature (°C)",
+        "pH",
+        "Hardness (dGH)"
     ]
 
     # -----------------------------
@@ -78,15 +83,36 @@ def run():
 
     cols = st.columns(len(selected_species))
 
-    for col, species in zip(cols, selected_species):
-        with col:
-            image_path = SPECIES_DATA[species].get("Image")
-            if not image_path:
-                image_path = PLACEHOLDER_IMAGE
-                st.caption("Image coming soon")
+    st.subheader("Selected Species")
 
-            st.image(image_path, width=220)
-            st.markdown(f"**{species}**")
+    for species in selected_species:
+        data = SPECIES_DATA[species]
+        image_path = data.get("Image") or PLACEHOLDER_IMAGE
+
+        with st.container():
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+
+            col1, col2 = st.columns([1, 2])
+
+            with col1:
+                st.image(image_path, width=160)
+
+            with col2:
+                st.markdown(
+                    f'<div class="card-title">{species}</div>',
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f'<div class="card-sub">Min Tank Size: {data["Min Tank Size (L)"]} L</div>',
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f'<div class="card-sub">Category: {data["Category"]}</div>',
+                    unsafe_allow_html=True
+                )
+
+            st.markdown('</div>', unsafe_allow_html=True)
+
 
     for param in water_parameters:
         ranges = [SPECIES_DATA[s][param] for s in selected_species]

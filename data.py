@@ -25,6 +25,7 @@ SPECIES_DATA = {
         "pH": (6.0, 7.5),
         "Hardness (dGH)": (5, 15),
         "Min Tank Size (L)": 40,
+        "Min groupsize": 2,
     },
     "Trichogaster leeri": {
         "Category": "Fish",
